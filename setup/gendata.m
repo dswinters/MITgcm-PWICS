@@ -321,7 +321,7 @@ plot([xc(nxc-nsponge) xc(nxc-nsponge)],[yc(1) yc(end)],'k')
 plot([xc(1) xc(end)],[yc(nyc-nsponge) yc(nyc-nsponge)],'k')
 contour(xc,yc,PROF',[0 0],'linewidth',2,'color','k');
 yf = shelf_offset + [0 100e3]; % y-coords of flux calc region
-plot((xSin1*[1 1]+70e3),yf,'r-','linewidth',2);
+plot((xSin1*[1 1]+70e3),yf,'r-','linewidth',1);
 patch([xF0 xF1, xSin1 xSin1-LF],...
       [yF0*[1 1], shelf_offset*[1 1]],...
       [1 1 1],'edgecolor','none','facealpha',0.5)

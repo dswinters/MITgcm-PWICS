@@ -1,6 +1,7 @@
 function params = gendata(theta, kTopo, rdir, flags)
 
 lprof = 20e3; % depth of corrugations
+shelf_offset = 2.1*abs(lprof);
 
 %% setup for wave generation along shelf topography at small promontory.
 %% x is along shore
@@ -18,7 +19,7 @@ fs = 6; fn = 'times';
 g = 9.81; 
 f = 1e-4; % gsw_f(43.29);
 om = 1.36*f;
-np = 4; % processors
+np = [4 2]; % processors [nx, ny]
 
 % % this was a crude estimate neglecting the shelf
 % cp = sqrt(g*max(abs(jl.h)));
@@ -85,7 +86,7 @@ cg = (om*1.01 - om*0.99)/(kpp(1)-kpm(1));  % estimate group velocity
 lTopo = 2*pi/kTopo;
 LF = 1200e3; % length of forcing line
 lamX = lamV/sind(theta); % projected wavelength of incident wave at coast
-yF0 = 2*lamV; % north position of forcing line
+yF0 = 2*lamV+shelf_offset; % north position of forcing line
 
 %horizontal grid parameters
 dx_outer = lamV/10; % set the outer grid resolution to resolve the forcing wave
@@ -94,41 +95,31 @@ dx_inner = 5e3; %2.e3;
 dy_inner = 5e3; %2.e3;
 
 % Expand the domain to accommodate large incident angles + some minimum sponge
-% region. The domain is later trimmed to be divisible by np, so we need nsponge+np-1
-% extra padding to make sure the forcing region is never trimmed.
-Lx = max(12*lamV, 2*(dx_outer*(nsponge+np-1) + yF0*abs(tand(theta)) + LF/2));
+% region.
+Lx = max(12*lamV, 2*(dx_outer*nsponge + yF0*abs(tand(theta)) + LF/2));
 Ly = 3*lamV; % in m
 
-
-S = yF0/cosd(theta); % along ray distance from forcing to shelf
-T = S/cg; % time for incident wave to hit shelf
-          % Simulation should end between T and 2*T
 Tend = 10*(2*pi/om); % run for 10 forcing cycles
 % disp(['Theta = ' num2str(theta) ': Simulation should end at ' num2str(Tend/3600,4) ' hr.'])
 
 x0inner = Lx/2 - LF/2 - 300e3; % let's start the high res region just before the sine topo
 x1inner = Lx/2 + LF/2 + 300e3; % how long after sine topo should we have high res?
 
-xCenter = mean([x0inner x1inner]);
+xSin1 = x1inner - 500e3; % end corrugations at some constant offset from high-res region
 
-xF0 = xCenter - LF/2 - yF0*tand(theta); % west position of forcing line
+xF0 = xSin1 - LF - (yF0-shelf_offset)*tand(theta); % west position of forcing line
 xF1 = xF0 + LF;
 
 % now make horizontal grids
 % x
-
 dx = [dx_outer*ones(1,ceil(x0inner/dx_outer)) ...
       dx_inner*ones(1,ceil((x1inner-x0inner)/dx_inner))...
-      dx_outer*ones(1,ceil((Lx-x1inner)/dx_outer))]  ;
-if(mod(length(dx),np)) % make grid points divisible by # of processors
-    bd = mod(length(dx),np); % points to remove
-    if theta >= 0
-        dx = [dx(1:end-nsponge-bd-1) dx(end-nsponge:end)]; % trim from right
-    elseif theta < 0
-        dx = [dx(1:nsponge) dx(nsponge+bd+1:end)]; % trim from left
-    end
-    %    dx = [dx(1:(length(dx)-1)/2) dx((length(dx)-1)/2+2:end)];
-end
+      dx_outer*ones(1,ceil((Lx-x1inner)/dx_outer))];
+% add cells on right to make domain divisible by # of processors
+n_add = np(1) - mod(length(dx),np(1));
+dx = [dx, dx_outer*ones(1,n_add)];
+
+% smooth dx
 dx = smooth(smooth(dx,5),5)';
 xg = [0 cumsum(dx)];
 xc = 0.5*(xg(2:end)+xg(1:end-1));
@@ -136,7 +127,11 @@ xc = 0.5*(xg(2:end)+xg(1:end-1));
 % y
 dy = [dy_inner*ones(1,floor((yF0 + 0.25*lamV)/dy_inner)) ...
       dy_outer*ones(1,floor((Ly-0.75*lamV)/dy_outer))];
+% add cells offshore to make domain divisible by # of processors
+n_add = np(2) - mod(length(dy),np(2));
+dy = [dy, dy_outer*ones(1,n_add)];
 
+% smooth dy
 dy = smooth(smooth(dy,5),5)';
 yg = [0 cumsum(dy)];
 yc = 0.5*(yg(2:end)+yg(1:end-1));
@@ -160,18 +155,15 @@ PROF = NaN(nxc,nyc);
 
 % xSin0 = Lx/2 - LF/2; % start sine wave around here
 % xSin1 = Lx/2 + LF/2; % stop sine wave after this
+
+xSin1 = x1inner - 500e3; % stop sine wave after this
 nLambdas = floor(LF/lTopo); % this must be odd, otherwise there will be a sharp cutoff at the ends
-if(floor(nLambdas/2) ~= nLambdas/2)
-    nLambdas = nLambdas - 1;
-end
-xSin0 = xCenter - lTopo*nLambdas/2; % start sine wave around here
-xSin1 = xCenter + lTopo*nLambdas/2; % stop sine wave after this
+xSin0 = xSin1 - lTopo*nLambdas; % start sine wave around here
 
 cutoff = 0*xc;
 cutoff(xc >= xSin0 & xc <= xSin1) = 1;
-
 for ii = 1:nxc
-    ycshift = yc + 2.1*abs(lprof) + lprof*(cutoff(ii)* (0.5 - 0.5*cos((xc(ii)-xCenter)*kTopo)));
+    ycshift = yc + shelf_offset + lprof*(cutoff(ii)* (0.5 - 0.5*cos((xc(ii)-xSin1)*kTopo)));
     tmp = interp1(ycshift,prof,yc);
     PROF(ii,:) = tmp;
 end
@@ -319,24 +311,26 @@ ylabel('y [km]')
 
 subplot('position',[0.55 0.3 0.15 0.6])
 set(gcf,'paperpositionmode','auto','color','w')
-pcolor(xc/1e3,yc/1e3,mask(:,:,1)'); shading flat; 
+pcolor(xc,yc,mask(:,:,1)'); shading flat;
 cb = colorbar;
 set(cb,'position',[0.71 0.3 0.015 0.6])
 hold on
-contour(xc/1e3,yc/1e3,PROF',[-4000:500:0],'k')
-plot([xc(nsponge) xc(nsponge)]/1e3,[yc(1) yc(end)]/1e3,'k')
-plot([xc(nxc-nsponge) xc(nxc-nsponge)]/1e3,[yc(1) yc(end)]/1e3,'k')
-plot([xc(1) xc(end)]/1e3,[yc(nyc-nsponge) yc(nyc-nsponge)]/1e3,'k')
+contour(xc,yc,PROF',[-4000:500:0],'k')
+plot([xc(nsponge) xc(nsponge)],[yc(1) yc(end)],'k')
+plot([xc(nxc-nsponge) xc(nxc-nsponge)],[yc(1) yc(end)],'k')
+plot([xc(1) xc(end)],[yc(nyc-nsponge) yc(nyc-nsponge)],'k')
 contour(xc,yc,PROF',[0 0],'linewidth',2,'color','k');
-% Find y-coordinate of offshore 0-depth at western boundary
-yf = yc(find(PROF(1,:)==0,1,'last')) + [0 100e3];
-plot((xSin1*[1 1]+70e3)/1e3,yf/1e3,'r-','linewidth',2);
-
-%plot([xc(1) xc(end)]/1e3,[yc(nyc-nsponge) yc(nyc-nsponge)]/1e3,'k')
+yf = shelf_offset + [0 100e3]; % y-coords of flux calc region
+plot((xSin1*[1 1]+70e3),yf,'r-','linewidth',2);
+patch([xF0 xF1, xSin1 xSin1-LF],...
+      [yF0*[1 1], shelf_offset*[1 1]],...
+      [1 1 1],'edgecolor','none','facealpha',0.5)
 caxis([-1 1])
 grid on
-xlim([0 Lx/1e3])
-ylim([0 Ly/1e3])
+xlim([0 Lx])
+ylim([0 Ly])
+xticklabels(xticks/1e3)
+yticklabels([])
 title('MASK')
 set(gca,'fontsize',fs,'fontname',fn,'layer','top','yticklabel',{})
 
@@ -346,13 +340,11 @@ hold on
 plot(xc/1e3,dx/1e3,'.')
 plot(xSin0/1e3*[1 1],ylim,'k--')
 plot(xSin1/1e3*[1 1],ylim,'k--')
-plot(xCenter/1e3*[1 1],ylim,'r--')
 xlim([0 Lx/1e3])
 grid on
 set(gca,'fontsize',fs,'fontname',fn)
 xlabel('x [km]')
 ylabel('dx [km]')
-
 
 subplot('position',[0.78 0.1 0.17 0.8])
 set(gcf,'paperpositionmode','auto','color','w')

@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-rm -rf ../runs/*
-rm -rf ../build
-rm -rf ../mods
-rm -rf ../analysis/*
-rm -f  ../setup/figures/*
-rm -f  ../*/generated/*
-rm -f  ../input/shared/*.bin
-rm -f  ../PWICS.tar.gz
+rm -rfv ../runs/*
+rm -rfv ../build
+rm -rfv ../mods
+rm -fv  ../setup/figures/*
+rm -fv  ../*/generated/*
+rm -fv  ../input/shared/*.bin
+rm -fv  ../PWICS.tar.gz

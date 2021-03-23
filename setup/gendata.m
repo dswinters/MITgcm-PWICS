@@ -176,6 +176,7 @@ params.t_end = Tend;
 params.nxc = nxc;
 params.nyc = nyc;
 params.nzc = nzc;
+params.np = np;
 
 %% strat done, grids done, topo done
 

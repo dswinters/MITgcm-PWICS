@@ -16,7 +16,7 @@ for rname in ${rnames[@]}; do
   id=${rname#run_}
 
   # get executable name from run name
-  ex="mpirun -np 4 $exec_dir/mitgcm_${id%_kTopo*}.ex"
+  ex="mpirun -np 8 $exec_dir/mitgcm_${id%_kTopo*}.ex"
 
   cd $run_dir/$rname           # enter simulations's directory
   np=$(pgrep mitgcm | wc -l) # count number of mitgcm processes

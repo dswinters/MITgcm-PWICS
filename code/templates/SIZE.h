@@ -42,8 +42,8 @@ C     Nr  - No. points in Z for full process domain.
      &           OLy =   5,
      &           nSx =   1,
      &           nSy =   1,
-     &           nPx =   2,
-     &           nPy =   2,
+     &           nPx =   PLACEHOLDER,
+     &           nPy =   PLACEHOLDER,
      &           Nx  = sNx*nSx*nPx,
      &           Ny  = sNy*nSy*nPy,
      &           Nr  = PLACEHOLDER)

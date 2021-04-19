@@ -1,7 +1,7 @@
 clear all, close all
 
 deltaT = 500;
-theta = [20]; % angle of PW wave vector wrt line perpendicular to coast [deg]
+theta = [0 20 40 60]; % angle of PW wave vector wrt line perpendicular to coast [deg]
 lTopo = linspace(20e3,700e3,30);
 kTopo = 2*pi./lTopo;
 

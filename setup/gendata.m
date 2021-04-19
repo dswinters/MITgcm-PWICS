@@ -96,14 +96,15 @@ dy_inner = 5e3; %2.e3;
 
 % Expand the domain to accommodate large incident angles + some minimum sponge
 % region.
-Lx = max(12*lamV, 2*(dx_outer*nsponge + yF0*abs(tand(theta)) + LF/2));
+high_res_pad = 300e3;
+Lx = max(12*lamV, 2*(dx_outer*nsponge + (yF0+shelf_offset)*abs(tand(theta)) + LF/2 + high_res_pad));
 Ly = 3*lamV; % in m
 
 Tend = 10*(2*pi/om); % run for 10 forcing cycles
 % disp(['Theta = ' num2str(theta) ': Simulation should end at ' num2str(Tend/3600,4) ' hr.'])
 
-x0inner = Lx/2 - LF/2 - 300e3; % let's start the high res region just before the sine topo
-x1inner = Lx/2 + LF/2 + 300e3; % how long after sine topo should we have high res?
+x0inner = Lx/2 - LF/2 - high_res_pad; % let's start the high res region just before the sine topo
+x1inner = Lx/2 + LF/2 + high_res_pad; % how long after sine topo should we have high res?
 
 xSin1 = x1inner - 500e3; % end corrugations at some constant offset from high-res region
 

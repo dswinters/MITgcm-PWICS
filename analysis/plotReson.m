@@ -1,15 +1,10 @@
-function plotReson(theta,kTopo)
-
-% TODO: This was adapted from a version that looped over different corrugation
-% amplitudes. Need to test on standard theta/kTopo parameter space.
+function [aflxBC aflx] = plotReson(theta,kTopo)
 
 fs = 14; fn = 'times';
 lam = 2*pi./kTopo;
 dx_inner = 5e3; %2.e3;
 dy_inner = 5e3; %2.e3;
 om = 1.36*1e-4;
-
-tags = {'_20km'};
 
 datt = [];
 aflxBC = {[]};
@@ -19,8 +14,9 @@ yf = {};
 for i = 1:length(theta)
     for j = 1:length(kTopo)
         % Load run data
-        thetaPrefix = sprintf('theta%3.2f_',theta); % File prefix for theta
+        thetaPrefix = sprintf('theta%3.2f_',theta(i)); % File prefix for theta
         kTopoPrefix = sprintf('kTopo%.8f_',kTopo(j)); % File prefix for kTopo
+        rdir = '..';
         rname = sprintf('run_%s%s',thetaPrefix,kTopoPrefix(1:end-1));
         load(fullfile(rdir,'runs',rname,'corrugation_params.mat'),'xSin1')
         datt = rdmnc(fullfile(rdir,'runs',rname,'outs_sn.*'),'T','iter');
@@ -57,7 +53,6 @@ pl1 = [];
 pl2 = [];
 cols = get(groot,'DefaultAxesColorOrder');
 clf
-tags = {'20km'};
 
 for i = 1:length(aflx)
     subplot(1,2,1); hold on
@@ -74,7 +69,10 @@ for i = 1:length(aflx)
     set(gca,'fontsize',8)
 end
 
-hl = legend(pl1,tags,'location','east','interpreter','none');
-hl = legend(pl2,tags,'location','east','interpreter','none');
+legstr = arrayfun(@(x) sprintf('\\theta=%.1f^\\circ',x), theta, 'uni', false);
+
+hl = legend(pl1,legstr,'location','northeast');
+hl = legend(pl2,legstr,'location','northeast');
 
 print('-dpng','pwics_resonance.png')
+save plotReson.mat aflxBC aflx theta kTopo

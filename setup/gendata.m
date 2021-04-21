@@ -88,6 +88,9 @@ LF = 1200e3; % length of forcing line
 lamX = lamV/sind(theta); % projected wavelength of incident wave at coast
 yF0 = 2*lamV+shelf_offset; % north position of forcing line
 
+diY = yF0/cosd(theta); % along beam distance from forcing to corrugations 
+Tend = diY/cg + 5*(2*pi/om); % simulation ends 5 periods after wave reaches corrugations
+
 %horizontal grid parameters
 dx_outer = lamV/10; % set the outer grid resolution to resolve the forcing wave
 dy_outer = dx_outer;
@@ -100,7 +103,7 @@ high_res_pad = 300e3;
 Lx = max(12*lamV, 2*(dx_outer*nsponge + (yF0+shelf_offset)*abs(tand(theta)) + LF/2 + high_res_pad));
 Ly = 3*lamV; % in m
 
-Tend = 10*(2*pi/om); % run for 10 forcing cycles
+%Tend = 10*(2*pi/om); % run for 10 forcing cycles
 % disp(['Theta = ' num2str(theta) ': Simulation should end at ' num2str(Tend/3600,4) ' hr.'])
 
 x0inner = Lx/2 - LF/2 - high_res_pad; % let's start the high res region just before the sine topo

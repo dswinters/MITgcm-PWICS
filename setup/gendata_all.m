@@ -1,7 +1,7 @@
 clear all, close all
 
 deltaT = 500;
-theta = [0 20 40 60]; % angle of PW wave vector wrt line perpendicular to coast [deg]
+theta = [-60:20:60]; % angle of PW wave vector wrt line perpendicular to coast [deg]
 lTopo = linspace(20e3,700e3,30);
 kTopo = 2*pi./lTopo;
 
@@ -96,3 +96,5 @@ for i = 1:length(theta) % theta index
 
     flags.write_kTopo_dependent = false; % We've looped over all kTopos
 end % loop over thetas
+
+!ls ../runs > run_list.txt

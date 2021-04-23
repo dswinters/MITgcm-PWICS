@@ -28,4 +28,4 @@ for i = 1:length(theta)
     plotVel(theta(i),kTopo(idx))
 end
 
-$./plotVel_movie.sh
+!./plotVel_movie.sh

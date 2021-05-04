@@ -56,16 +56,16 @@ clf
 
 for i = 1:length(aflx)
     subplot(1,2,1); hold on
-    pl1(i) = plot(lam,aflxBC{i}(end,:),'-','linewidth',1,'color',cols(i,:)); grid on
-    xlabel('\lambda Topo')
-    ylabel('Baroclinic Flux (Along-shelf/incident)')
+    pl1(i) = plot(lam/1e3,aflxBC{i}(end,:),'-','linewidth',1,'color',cols(i,:)); grid on
+    xlabel('Corrugation lengthscale (km)')
+    ylabel('Along-shelf baroclinic flux to 100 km (W/m)')
     set(gca,'fontsize',8)
 
     % subplot(2,2,4)
     subplot(1,2,2); hold on
     pl2(i) = plot(lam,aflx{i}(end,:),'-','linewidth',1,'color',cols(i,:)); grid on
-    xlabel('\lambda Topo')
-    ylabel('Total Flux (Along-shelf/Incident)')
+    xlabel('Corrugation lengthscale (km)')
+    ylabel('Along-shelf flux to 100 km (W/m)')
     set(gca,'fontsize',8)
 end
 

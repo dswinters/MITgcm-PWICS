@@ -26,6 +26,7 @@ load plotReson.mat;
 for i = 1:length(theta)
     [~,idx] = max(aflx{i});
     plotVel(theta(i),kTopo(idx))
+    compute_ctw_wavelength(theta(i),kTopo(idx));
 end
 
-!./plotVel_movie.sh
+% !./plotVel_movie.sh

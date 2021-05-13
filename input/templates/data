@@ -54,7 +54,7 @@
  dumpFreq    =  31536000.,
  monitorFreq =  3600.,
  abEps       =    0.1,
- pChkptFreq  = 345600.,
+ pChkptFreq  =  PLACEHOLDER,
  chkptFreq   =    0.0,
  &
 

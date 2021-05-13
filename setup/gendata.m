@@ -90,7 +90,7 @@ lamX = lamV/sind(theta); % projected wavelength of incident wave at coast
 yF0 = 2*lamV+shelf_offset; % north position of forcing line
 
 diY = yF0/cosd(theta); % along beam distance from forcing to corrugations 
-Tend = diY/cg + 5*(2*pi/om); % simulation ends 5 periods after wave reaches corrugations
+Tend = diY/cg + 5*(2*pi/om); % simulation ends 5 periods after wave reaches corrugation
 
 %horizontal grid parameters
 dx_outer = lamV/10; % set the outer grid resolution to resolve the forcing wave
@@ -178,6 +178,7 @@ PROF(bads) = 0;
 
 %% output some parameters
 params.t_end = Tend;
+params.t_chkpt = Tend - 1.5*(2*pi/om); % time of checkpoint file
 params.nxc = nxc;
 params.nyc = nyc;
 params.nzc = nzc;

@@ -4,6 +4,7 @@ deltaT = 500;
 theta = [-60:20:60]; % angle of PW wave vector wrt line perpendicular to coast [deg]
 lTopo = linspace(20e3,700e3,30);
 kTopo = 2*pi./lTopo;
+params = gendata_params();
 
 % Some flags so we can generate files on e.g. the first theta of every kTopo,
 % only once per group of runs, etc...
@@ -36,7 +37,8 @@ for i = 1:length(theta) % theta index
         if flags.write_theta_dependent % (i.e. do these on the first kTopo of every theta)
             thsubs = {
                 '../code/templates/rbcs_fields_load.F',...
-                    {'th', sprintf('%.1f * pi/180.',theta(i))},...
+                    {'th', sprintf('%.1f * pi/180.',theta(i));
+                     'om', sprintf('%.3e * pi/180.',params.om},...
                      thetaPrefix;
                 '../code/templates/SIZE.h',...
                     {'sNx', sprintf('%d', params.nxc/params.np(1));

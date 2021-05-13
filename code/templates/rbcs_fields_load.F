@@ -271,7 +271,7 @@ c$$$      ENDDO
 C-- RCM: Replace RBC fields with analytic
  
 C-- omega and lambda come from modes.mat      
-      om = 1.36e-04
+      om = PLACEHOLDER
       lam = 335.15e3
 C-- mode 2      lam = 176.78e3
       th = PLACEHOLDER

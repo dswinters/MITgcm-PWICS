@@ -1,6 +1,7 @@
 function plotVel(theta,kTopo)
 
-om = 1.36*1e-4; % forcing frequency
+params = gendata_params();
+om = params.om;
 fs = 8; fn = 'times';
 thetaPrefix = sprintf('theta%3.2f_',theta); % File prefix for theta
 kTopoPrefix = sprintf('kTopo%.8f_',kTopo); % File prefix for kTopo

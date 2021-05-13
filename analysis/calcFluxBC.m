@@ -1,7 +1,7 @@
 %% calculate baroclinic energy flux
 %% RCM Feb 2020
 %% Modified by DW 2021
-function outname = calcFluxBC_wave_avg_end(theta,kTopo)
+function outname = calcFluxBC(theta,kTopo)
 
 fs = 8; fn = 'times';
 thetaPrefix = sprintf('theta%3.2f_',theta); % File prefix for theta
@@ -18,9 +18,10 @@ if exist(outname,'file'); return; end
 descr = ['calcFluxBC ' rname];
 rhoNil = 999.8;
 tAlpha = 2e-4;
-g = 9.81;
-f = 1.e-04;
-om = 1.36*f;
+params = gendata_params();
+g = params.g;
+f = params.f;
+om = params.om;
 
 % Read grid data from model output
 gridm = rdmnc(fullfile(froot, 'grid*'));

@@ -16,9 +16,10 @@ fs = 6; fn = 'times';
 % % use the setup from Jim Lerczak's model to set bathymetry & stratification
 % jl = load('linearModel/subcritTopo_modes.mat'); % warning: in sigma coordinates!
 
-g = 9.81; 
-f = 1e-4; % gsw_f(43.29);
-om = 1.36*f;
+params = gendata_params();
+g = params.g;
+f = params.f; % gsw_f(43.29);
+om = params.om;
 np = [4 2]; % processors [nx, ny]
 
 % % this was a crude estimate neglecting the shelf

@@ -4,7 +4,8 @@ fs = 14; fn = 'times';
 lam = 2*pi./kTopo;
 dx_inner = 5e3; %2.e3;
 dy_inner = 5e3; %2.e3;
-om = 1.36*1e-4;
+params = gendata_params();
+om = params.om;
 
 datt = [];
 aflxBC = {[]};

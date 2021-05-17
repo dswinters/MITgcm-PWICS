@@ -29,7 +29,8 @@ for rname in ${rnames[@]}; do
     done
   # Start simulation
   echo "$np simulations running, starting $rname"
-  rm -f *.data *.meta *.nc STD*
+  # rm -f *.data *.meta *.nc STD*
+  rm -f grid*.nc
   $ex &
   sleep $sleep_between
   done

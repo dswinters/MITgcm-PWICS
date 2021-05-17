@@ -12,6 +12,7 @@ flags.write_theta_dependent = true;
 flags.write_kTopo_dependent = true;
 output_freq = -3600; % write every 3600 seconds
 
+
 for i = 1:length(theta) % theta index
     thetaPrefix = sprintf('theta%3.2f_',theta(i)); % File prefix for theta
     flags.write_theta_dependent = true;
@@ -26,6 +27,7 @@ for i = 1:length(theta) % theta index
 
         % Generate run data
         params = gendata(theta(i), kTopo(j), rdir, flags);
+        niter0 = floor(params.t_chkpt/deltaT);
 
         % Template files have been set up with FIELD = PLACEHOLDER for fields that need
         % to be written. Make a cell array of substitutions with entries that
@@ -51,6 +53,7 @@ for i = 1:length(theta) % theta index
                 '../input/templates/data',...
                     {'deltaT', sprintf('%.1f',deltaT);
                      'pChkptFreq', sprintf('%.1f',params.t_chkpt);
+                     'niter0', sprintf('%d',niter0);
                      'nTimeSteps',  sprintf('%d',ceil(params.t_end/deltaT))},...
                      thetaPrefix;
                 '../input/templates/data.diagnostics',...

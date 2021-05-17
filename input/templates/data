@@ -47,7 +47,7 @@
 # Time stepping parameters
  &PARM03
 
- niter0 = 0,
+ niter0 = PLACEHOLDER,
 # pickupSuff = 'pickup.ckptA',
  nTimeSteps  =  PLACEHOLDER,
  deltaT      =  PLACEHOLDER,

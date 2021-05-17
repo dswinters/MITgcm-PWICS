@@ -11,6 +11,7 @@ params = gendata_params();
 flags.write_theta_dependent = true;
 flags.write_kTopo_dependent = true;
 output_freq = 0; % don't write output
+niter0 = 0;
 
 for i = 1:length(theta) % theta index
     thetaPrefix = sprintf('theta%3.2f_',theta(i)); % File prefix for theta
@@ -50,6 +51,7 @@ for i = 1:length(theta) % theta index
                      thetaPrefix;
                 '../input/templates/data',...
                     {'deltaT', sprintf('%.1f',deltaT);
+                     'niter0', sprintf('%d',niter0);
                      'pChkptFreq', sprintf('%.1f',params.t_chkpt);
                      'nTimeSteps',  sprintf('%d',ceil(params.t_end/deltaT))},...
                      thetaPrefix;

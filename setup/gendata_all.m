@@ -10,7 +10,7 @@ params = gendata_params();
 % only once per group of runs, etc...
 flags.write_theta_dependent = true;
 flags.write_kTopo_dependent = true;
-output_freq = -3600; % write every 3600 seconds
+output_freq = 0; % don't write output
 
 for i = 1:length(theta) % theta index
     thetaPrefix = sprintf('theta%3.2f_',theta(i)); % File prefix for theta

@@ -10,6 +10,7 @@ params = gendata_params();
 % only once per group of runs, etc...
 flags.write_theta_dependent = true;
 flags.write_kTopo_dependent = true;
+output_freq = -3600; % write every 3600 seconds
 
 for i = 1:length(theta) % theta index
     thetaPrefix = sprintf('theta%3.2f_',theta(i)); % File prefix for theta
@@ -38,7 +39,7 @@ for i = 1:length(theta) % theta index
             thsubs = {
                 '../code/templates/rbcs_fields_load.F',...
                     {'th', sprintf('%.1f * pi/180.',theta(i));
-                     'om', sprintf('%.3e * pi/180.',params.om},...
+                     'om', sprintf('%.3e * pi/180.',params.om)},...
                      thetaPrefix;
                 '../code/templates/SIZE.h',...
                     {'sNx', sprintf('%d', params.nxc/params.np(1));
@@ -51,6 +52,12 @@ for i = 1:length(theta) % theta index
                     {'deltaT', sprintf('%.1f',deltaT);
                      'pChkptFreq', sprintf('%.1f',params.t_chkpt);
                      'nTimeSteps',  sprintf('%d',ceil(params.t_end/deltaT))},...
+                     thetaPrefix;
+                '../input/templates/data.diagnostics',...
+                     {'frequency(3)', sprintf('%.1f',output_freq);
+                      'timePhase(3)', sprintf('%.1f',output_freq);
+                      'frequency(4)', sprintf('%.1f',output_freq);
+                      'timePhase(4)', sprintf('%.1f',output_freq)},...
                      thetaPrefix;
                 '../input/templates/data.obcs',...
                     {'OB_Ieast', sprintf('%d*-1', params.nyc);

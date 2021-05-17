@@ -39,12 +39,12 @@
   fields(1:4,3) = 'UVEL','VVEL','THETA',
   		  'PHIHYD '
    fileName(3) = 'outs_sn',	   
-   frequency(3) = -3600.,
-   timePhase(3) = -3600.,
+   frequency(3) = PLACEHOLDER,
+   timePhase(3) = PLACEHOLDER,
   fields(1,4) = 'ETAN'
    fileName(4) = 'outs_sn_etan',
-   frequency(4) = -3600.,
-   timePhase(4) = -3600.,	   
+   frequency(4) = PLACEHOLDER,
+   timePhase(4) = PLACEHOLDER,
  &
 
 #--------------------

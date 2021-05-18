@@ -1,6 +1,7 @@
 function params = gendata(theta, kTopo, rdir, flags)
 
-lprof = 20e3; % depth of corrugations
+params = gendata_params();
+lprof = params.lprof; % depth of corrugations
 shelf_offset = 2.1*abs(lprof);
 
 %% setup for wave generation along shelf topography at small promontory.
@@ -16,7 +17,6 @@ fs = 6; fn = 'times';
 % % use the setup from Jim Lerczak's model to set bathymetry & stratification
 % jl = load('linearModel/subcritTopo_modes.mat'); % warning: in sigma coordinates!
 
-params = gendata_params();
 g = params.g;
 f = params.f; % gsw_f(43.29);
 om = params.om;

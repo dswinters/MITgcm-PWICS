@@ -1,10 +1,10 @@
 clear all, close all
 
-deltaT = 500;
-theta = [-60:20:60]; % angle of PW wave vector wrt line perpendicular to coast [deg]
-lTopo = linspace(20e3,700e3,30);
-kTopo = 2*pi./lTopo;
 params = gendata_params();
+deltaT = params.deltaT;
+theta = params.theta;
+lTopo = params.lTopo;
+kTopo = params.kTopo;
 
 % Some flags so we can generate files on e.g. the first theta of every kTopo,
 % only once per group of runs, etc...

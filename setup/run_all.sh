@@ -23,12 +23,12 @@ for rname in ${rnames[@]}; do
   # Wait until we're running fewer than the maximum number of allowed processes
 
   while (( np >= np_max )); do
-    echo "$np simulations running, retrying in $retry seconds"
+    # echo "$np simulations running, retrying in $retry seconds"
     sleep $retry
     np=$(pgrep mitgcm | wc -l)
     done
   # Start simulation
-  echo "$np simulations running, starting $rname"
+  echo "$(date): $np simulations running, starting $rname"
   # rm -f *.data *.meta *.nc STD*
   rm -f grid*.nc
   $ex &

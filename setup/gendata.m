@@ -290,7 +290,7 @@ fclose(fid);
 
 % Output corrugation parameters to .mat file in run directory so we don't need
 % to copy/paste all of gendata when calculating fluxes etc.
-save(fullfile(rdir, 'corrugation_params.mat'),'lprof','xSin0','xSin1');
+save(fullfile(rdir, 'corrugation_params.mat'),'lprof','xSin0','xSin1','kTopo');
 disp(['Saved ' fullfile(rdir, 'corrugation_params.mat')])
 
 % Make setup figure

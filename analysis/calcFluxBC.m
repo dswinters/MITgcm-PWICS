@@ -12,7 +12,7 @@ fig_dir = 'calcFluxBC';
 if ~exist(fig_dir,'dir'); mkdir(fig_dir); end
 
 outname = fullfile(fig_dir, [rname '_flux_wave_avg_end.mat']);
-if exist(outname,'file'); return; end
+if exist(outname,'file'); return; end % comment this to overwrite output
 
 % Define some constants
 descr = ['calcFluxBC ' rname];
@@ -46,19 +46,19 @@ rac = gridm.rA;
 raz = gridm.rAz;
 dpth = gridm.Depth;
 
-% Read time data
-datt = rdmnc(fullfile(froot,'outs_sn.*'),'T','iter');
-nt = length(datt.T);
-
-% get background pressure
-dat = rdmnc(fullfile(froot,'outs_sn.0000000000.*.nc'),'PHIHYD',datt.iter(1));
-p0 = dat.PHIHYD*rhoNil; % kgm^-3 * m^2/s^2 = pa
-
 % find unique output times
 files = dir(fullfile(froot,'outs_sn.*.nc'));         % all files
 fids = extractBetween({files.name},'outs_sn.','.t'); % time identifiers (ignore tile suffixes)
 fids = unique(fids);
 [~,fidx] = unique(fids);
+
+% Read time data
+datt = rdmnc(fullfile(froot,'outs_sn.*'),'T','iter');
+nt = length(datt.T);
+
+% get background pressure
+dat = rdmnc(fullfile(froot,['outs_sn.' fids{end} '.*.nc']),'PHIHYD',datt.iter(1));
+p0 = dat.PHIHYD*rhoNil; % kgm^-3 * m^2/s^2 = pa
 
 % initialize summed flux terms
 up = zeros(nx,ny,nz);
@@ -78,7 +78,7 @@ vpbcK = zeros(nx,ny,nz);
 vint=@(x) sum(x.*hfacc.*permute(drf,[1,3,2]),3);
 
 % number of timesteps in a wave period
-nperiod = sum(datt.T <= 2*pi/om);
+nperiod = sum(datt.T >= datt.T(end)-2*pi/om);
 
 % initialize depth- and time-averaved flux terms
 upbt = zeros(nx,ny);

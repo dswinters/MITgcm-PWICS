@@ -28,7 +28,7 @@ for rname in ${rnames[@]}; do
     np=$(pgrep mitgcm | wc -l)
     done
   # Start simulation
-  echo "$(date): $np simulations running, starting $rname"
+  echo "$(date): $np processes running, starting $rname"
   # rm -f *.data *.meta *.nc STD*
   rm -f grid*.nc
   $ex &

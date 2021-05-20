@@ -3,7 +3,7 @@
 * Setup
 
 1) Clone this repository.
-2) Edit ~setup/gendata_all.m~ to modify the incidence angle and topographic wavenumber range.  This is the main script for generating model input.
+2) Edit ~setup/gendata_params.m~ to modify the incidence angle and topographic wavenumber range.
 3) Modify ~mitgcm_root~ and ~buildopts~ in ~setup/build_all.sh~ to point to your MITgcm folder (cloned from GitHub) and your machine's build options file.
 4) Use ~description.txt~ to make notes for later reference.
 5) Run ~setup/gendata_all.m~ (from the ~setup~ directory). This will create a directory for each run containing input files and code.

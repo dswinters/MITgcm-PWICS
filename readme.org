@@ -11,6 +11,7 @@
 7) ~run_all.sh~ can be modified and used to run a list of simulations, e.g.
    #+BEGIN_SRC shell
    cd setup
-   ls ../runs > run_list
    nohup ./run_all run_list > log.txt &
    #+END_SRC
+
+8) Repeat steps 5 and 7, but using ~setup/gendata_all_pickup.m~.

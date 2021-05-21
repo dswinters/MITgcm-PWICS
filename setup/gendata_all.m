@@ -10,7 +10,6 @@ kTopo = params.kTopo;
 % only once per group of runs, etc...
 flags.write_theta_dependent = true;
 flags.write_kTopo_dependent = true;
-output_freq = 0; % don't write output
 niter0 = 0;
 
 for i = 1:length(theta) % theta index
@@ -53,13 +52,13 @@ for i = 1:length(theta) % theta index
                     {'deltaT', sprintf('%.1f',deltaT);
                      'niter0', sprintf('%d',niter0);
                      'pChkptFreq', sprintf('%.1f',params.t_chkpt);
-                     'nTimeSteps',  sprintf('%d',ceil(params.t_end/deltaT))},...
+                     'nTimeSteps',  sprintf('%d',ceil(params.t_chkpt/deltaT))},...
                      thetaPrefix;
                 '../input/templates/data.diagnostics',...
-                     {'frequency(3)', sprintf('%.1f',output_freq);
-                      'timePhase(3)', sprintf('%.1f',output_freq);
-                      'frequency(4)', sprintf('%.1f',output_freq);
-                      'timePhase(4)', sprintf('%.1f',output_freq)},...
+                     {'frequency(3)', sprintf('%.1f',-params.t_end);
+                      'timePhase(3)', sprintf('%.1f',-params.t_end);
+                      'frequency(4)', sprintf('%.1f',-params.t_end);
+                      'timePhase(4)', sprintf('%.1f',-params.t_end)},...
                      thetaPrefix;
                 '../input/templates/data.obcs',...
                     {'OB_Ieast', sprintf('%d*-1', params.nyc);

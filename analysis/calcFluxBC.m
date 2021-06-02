@@ -57,7 +57,7 @@ datt = rdmnc(fullfile(froot,'outs_sn.*'),'T','iter');
 nt = length(datt.T);
 
 % get background pressure
-dat = rdmnc(fullfile(froot,['outs_sn.' fids{end} '.*.nc']),'PHIHYD',datt.iter(1));
+dat = rdmnc(fullfile(froot,'outs_sn.0000000000.*.nc'),'PHIHYD',datt.iter(1));
 p0 = dat.PHIHYD*rhoNil; % kgm^-3 * m^2/s^2 = pa
 
 % initialize summed flux terms

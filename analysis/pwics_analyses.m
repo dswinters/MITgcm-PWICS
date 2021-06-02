@@ -21,7 +21,7 @@ for i = 1:length(theta)
     end
 end
 
-plotReson(theta,kTopo)
+plotReson(theta,kTopo);
 
 load plotReson.mat;
 for i = 1:length(theta)

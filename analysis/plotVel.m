@@ -1,5 +1,5 @@
 function plotVel(theta,kTopo)
-
+lTopo = 2*pi/kTopo;
 params = gendata_params();
 om = params.om;
 fs = 8; fn = 'times';
@@ -105,8 +105,8 @@ for i = 1:length(datt.iter)
     xticklabels(xticks/1000)
     yticklabels(yticks/1000)
 
-    ttxt = sprintf('\\theta=%.1f^\\circ, kTopo=%.2f | T=%.1f cycles | [nx ny nz]=[%d %d %d]',...
-                   theta,kTopo,datt.T(i)/(2*pi/om),...
+    ttxt = sprintf('\\theta=%.1f^\\circ, lTopo=%.2f | T=%.1f cycles | [nx ny nz]=[%d %d %d]',...
+                   theta,lTopo,datt.T(i)/(2*pi/om),...
                    length(gridm.X),length(gridm.Y),length(gridm.Z));
     hax = axes('visible','off','position',[0 0 1 1]);
     xlim(hax,[-1 1]); ylim(hax,[-1 1]);

@@ -12,6 +12,16 @@ flags.write_theta_dependent = true;
 flags.write_kTopo_dependent = true;
 niter0 = 0;
 
+% Ensure some directories exist
+dirs = {'../input/generated';
+        '../code/generated';
+        './figures'};
+for i = 1:length(dirs)
+    if ~exist(dirs{i},'dir');
+        mkdir(dirs{i});
+    end
+end
+
 for i = 1:length(theta) % theta index
     thetaPrefix = sprintf('theta%3.2f_',theta(i)); % File prefix for theta
     flags.write_theta_dependent = true;

@@ -6,12 +6,13 @@
 2) Edit ~setup/gendata_params.m~ to modify the incidence angle and topographic wavenumber range.
 3) Modify ~mitgcm_root~ and ~buildopts~ in ~setup/build_all.sh~ to point to your MITgcm folder (cloned from GitHub) and your machine's build options file.
 4) Use ~description.txt~ to make notes for later reference.
-5) Run ~setup/gendata_all.m~ (from the ~setup~ directory). This will create a directory for each run containing input files and code.
-6) Run ~setup/build_all.sh~ (from the ~setup~ directory). This creates an executable for each incidence angle.
-7) ~run_all.sh~ can be modified and used to run a list of simulations, e.g.
+5) Modify ~setup/gendata_params.m~ to define topographic wavenumber(s) and incidence angle(s).
+6) Run ~setup/gendata_all.m~ (from the ~setup~ directory). This will create a directory for each run containing input files and code.
+7) Run ~setup/build_all.sh~ (from the ~setup~ directory). This creates an executable for each incidence angle.
+8) ~run_all.sh~ can be modified and used to run a list of simulations, e.g.
    #+BEGIN_SRC shell
    cd setup
    nohup ./run_all run_list > log.txt &
    #+END_SRC
 
-8) Repeat steps 5 and 7, but using ~setup/gendata_all_pickup.m~.
+9) Repeat steps 5 and 7, but using ~setup/gendata_all_pickup.m~.

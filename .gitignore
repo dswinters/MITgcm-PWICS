@@ -1,0 +1,9 @@
+.DS_Store
+code/generated
+build/*
+input/generated
+exec/
+runs/
+input/shared
+setup/figures
+setup/run_list.txt

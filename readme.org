@@ -15,4 +15,16 @@
    nohup ./run_all run_list > log.txt &
    #+END_SRC
 
-9) Repeat steps 5 and 7, but using ~setup/gendata_all_pickup.m~.
+9) Repeat steps 5 and 7, but using ~setup/gendata_all_pickup.m~ to resume from the latest pickup file.
+
+
+
+** Working in limited-connectivity settings without git
+
+After step 1) above, copy this directory to the remote server, e.g.
+
+#+BEGIN_SRC shell
+rsync -av MITgcm-PWICS/ server:~/MITgcm/simulations/PWICS_01
+#+END_SRC
+
+Then follow the rest of the steps, but on the server. If you've generated input locally, you can either run ~cleanup.sh~ from the setup directory, or re-clone this repository to a new location for a fresh start.
